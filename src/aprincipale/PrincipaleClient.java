@@ -5,6 +5,8 @@ import ihm.ControleurMenu;
 import repository.EtudiantRepository;
 import repository.EtudiantRepositoryItf;
 import repository.FormationRepository;
+import repository.ModuleRepository;
+import repository.ModuleRepositoryItf;
 import service.Service;
 import service.ServiceItf;
 
@@ -18,7 +20,8 @@ public class PrincipaleClient {
 	public static void main(String[] args) {
 		FormationRepository formationRepository = new FormationRepository();
 		EtudiantRepositoryItf etudiantRepository = new EtudiantRepository();
-	    ServiceItf service = new Service(formationRepository, etudiantRepository);		
+		ModuleRepositoryItf moduleRepository = new ModuleRepository();
+	    ServiceItf service = new Service(formationRepository, etudiantRepository, moduleRepository);		
 		ControleurMenu ihm = new ControleurMenu(service);			
 	}
 }

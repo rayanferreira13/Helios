@@ -82,11 +82,16 @@ public class EtudiantRepository implements EtudiantRepositoryItf {
 	@Override
 	public List<Etudiant> readLikeName(String name) {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();      
-		Query query = entityManager.createQuery("select e from Etudiant as e where e.nom like :name");
+		Query query = entityManager.createQuery("select e from Etudiant as e where e.nom like :chaine");
 		query.setParameter("chaine", "%" + name + "%");
 		List<Etudiant> etudiants = query.getResultList();
 		entityManager.close();
 		return etudiants;
+	}
+	@Override
+	public Etudiant read(String strAcronymes) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -10,8 +10,10 @@ import javax.persistence.Query;
 import entite.Etudiant;
 import entite.EtudiantWhithAcronyme;
 import entite.Formation;
+import entite.Module;
 import repository.EtudiantRepositoryItf;
 import repository.FormationRepository;
+import repository.ModuleRepositoryItf;
 import util.EntityManagerUtil;
 
 /**
@@ -19,19 +21,25 @@ import util.EntityManagerUtil;
  * @author tophe
  * @version 1.0
  *
+ *
  */
 public class Service implements ServiceItf {
 	private FormationRepository formationRepository;
 	private EtudiantRepositoryItf etudiantRepository;
-	
+	private ModuleRepositoryItf moduleRepository;
 	/**
 	 * Est initialisé avec les composants dao.
 	 * @param formationRepository composant dao Formation
 	 * @param etudiantRepository composant dao Etudiant
 	 */
-	public Service(FormationRepository formationRepository, EtudiantRepositoryItf etudiantRepository) {
+	private List<Formation> formations;
+	private List<Module> modules;
+	
+	public Service(FormationRepository formationRepository, EtudiantRepositoryItf etudiantRepository,
+			ModuleRepositoryItf moduleRepository) {
 		this.formationRepository = formationRepository;
 		this.etudiantRepository = etudiantRepository;
+		this.moduleRepository = moduleRepository;
 	}
 
 	@Override
@@ -63,8 +71,7 @@ public class Service implements ServiceItf {
 	public List<Formation> readAllSansEtudiant() {
 		return formationRepository.readAllSansEtudiant();
 	}
-	
-	@Override
+
 	public EtudiantWhithAcronyme readEtudiant(Long id) {
 		Etudiant etudiant = etudiantRepository.read(id);
 		EtudiantWhithAcronyme etudiantWhithAcronyme = new EtudiantWhithAcronyme(etudiant);
@@ -119,4 +126,46 @@ public class Service implements ServiceItf {
 		}
 		return etudiantWhithAcronymes;
 	}
+
+	@Override
+	public Formation readAvecEtudiantEtModule(String acronyme) {
+		return formationRepository.readAvecEtudiantEtModule(acronyme);
+	}
+
+	@Override
+	public void ajouterModuleFormation(Module module, String acronyme) {
+		formationRepository.ajouterModuleFormation(module, acronyme);
+	}
+
+	@Override
+	public List<Module> readAllModule() {
+		List<Module> modules = moduleRepository.readAllModule();
+		List<Module> modulesList = new ArrayList<>();
+		for(int i=0; i<modules.size(); i++) {
+			modulesList.add(modules.get(i));
+		}
+		return modulesList;
+	}
+
+
+	@Override
+	public Module update(Module module) {
+		return null;
+	}
+
+	@Override
+	public void supprimerModuleFormation(Module module, String acronyme) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void modifierModuleFormation(Module module, String acronyme) {
+		// TODO Auto-generated method stub
+		
+	}
 }
+
+
+	
+

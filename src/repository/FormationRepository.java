@@ -5,9 +5,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-
 import entite.Etudiant;
 import entite.Formation;
+import entite.Module;
 import util.EntityManagerUtil;
 
 /**
@@ -58,10 +58,11 @@ public class FormationRepository implements FormationRepositoryItf {
 	}
 	
 	@Override
-	public Formation readAvecEtudiant(String acronyme) {
+	public Formation readAvecEtudiantEtModule(String acronyme) {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();       
 		Formation formation = entityManager.find(Formation.class, acronyme);
 		formation.getEtudiants().size();
+		formation.getModules().size();
 		entityManager.close();
 		return formation;
 	}
@@ -149,4 +150,32 @@ public class FormationRepository implements FormationRepositoryItf {
 		return etudiant;
 	}
 	
+	public Module ajouterModuleFormation(Module module, String acronyme) {
+		EntityTransaction tx = null;
+		EntityManager entityManager = null;
+		try {
+			entityManager = EntityManagerUtil.getEntityManager(); 
+			tx = entityManager.getTransaction();
+			tx.begin();
+			Formation formation = entityManager.find(Formation.class, acronyme);	
+			entityManager.persist(module);
+			formation.add(module);
+			tx.commit();
+		} catch (Exception e) {
+			if(tx != null) {
+				tx.rollback();
+			}
+			e.printStackTrace();
+		}
+		finally {
+			if(entityManager != null) {
+				entityManager.close();
+			}
+		}
+		return module;
+	}
+
+		
 }
+	
+

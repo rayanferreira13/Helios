@@ -24,6 +24,8 @@ public class Formation implements Serializable {
 	@OneToMany(mappedBy="formation", cascade = CascadeType.ALL)
 	@OrderBy("nom ASC")
 	private List<Etudiant> etudiants; 
+	@OneToMany
+	private List<Module> modules;
 	private int nbrHeure;
 	@Lob
 	private String description;
@@ -35,6 +37,9 @@ public class Formation implements Serializable {
 		this.intitule = intitule;
 		this.nbrHeure = nbrHeure;
 		etudiants = new ArrayList<>();
+	}
+	public void add(Module module) {
+		modules.add(module);
 	}
 	public void add(Etudiant etudiant) {
 		etudiants.add(etudiant);
@@ -48,6 +53,7 @@ public class Formation implements Serializable {
 	@Override
 	public String toString() {
 		return "Formation [acronyme=" + acronyme + ", intitule=" + intitule + ", nbrHeure=" + nbrHeure + "]";
+	
 	}
 	public String getAcronyme() {
 		return acronyme;
@@ -78,5 +84,11 @@ public class Formation implements Serializable {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public List<Module> getModules() {
+		return modules;
+	}
+	public void setModules(List<Module> modules) {
+		this.modules = modules;
 	}
 }

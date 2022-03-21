@@ -35,6 +35,7 @@ public class VueEtudiant extends MonJPanel implements ActionListener {
 	private MonJButton btnAfficher;
 	private MonJButton btnModifier;
 	private MonJButton btnFiltrer;
+
 	public VueEtudiant(ControleurEtudiant controleurEtudiant, ModeleEtudiant model){
 		this.controleur = controleurEtudiant;
 		this.model = model;
@@ -58,15 +59,24 @@ public class VueEtudiant extends MonJPanel implements ActionListener {
 
 		MonJPanel panRecherche = new MonJPanel();
 		panRecherche.setLayout(new FlowLayout());
-		MonJTextField filtrerField = new MonJTextField(20);
-		MonJLabelTexte filtrerTexte = new MonJLabelTexte("Filtrer par nom :");
-		MonJButton btnFiltrer = new MonJButton("filtrer");
-		btnFiltrer.addActionListener(this);
+		MonJTextField filtrerField = new MonJTextField(30);
+		MonJLabelTexte filtrerTexte = new MonJLabelTexte("Filtre :");
+		MonJButton btnFiltrer = new MonJButton("Recherche avanc�e");
+		//btnFiltrer.addActionListener(this);
 		panRecherche.add(filtrerTexte);
 		panRecherche.add(filtrerField);
 		panRecherche.add(btnFiltrer);
-		
-		
+
+		btnFiltrer.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				String filtre = filtrerField.getText();
+				controleur.trierEtudiant(filtre);     
+			}
+		});
+
+
 		table = new MonJTable(model);
 		JScrollPane tabScroll = new JScrollPane(table);
 		panTabPlusBtns.add(tabScroll, BorderLayout.CENTER);
@@ -122,4 +132,5 @@ public class VueEtudiant extends MonJPanel implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Vous devez sélectionner un étudiant.");
 		}
 	}
+
 }

@@ -1,6 +1,7 @@
 package ihm;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -10,11 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.List;
-
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import ihm.admin.etudiant.ControleurEtudiant;
@@ -24,6 +26,9 @@ import ihm.admin.promotion.ControleurFormation;
 import ihm.admin.promotion.ModeleFormation;
 import ihm.admin.promotion.VueFormation;
 import ihm.composant.MonJMenuItem;
+import ihm.pilote.formation.ControleurPiloteFormation;
+import ihm.pilote.formation.ModelPilote;
+import ihm.pilote.formation.VuePiloteFormation;
 import service.ServiceItf;
 import util.Constante;
 /**
@@ -35,12 +40,14 @@ import util.Constante;
  */
 public class ControleurMenu extends JFrame implements ActionListener {
 	private ServiceItf service;
-	private JMenuBar barreMenus ; 
-	private JMenu administration ; 
-	private MonJMenuItem etudiantItem; 
-	private MonJMenuItem promotionItem;
-	private Container conteneur;
-	private JPanel panneauCourant;
+    private JMenuBar barreMenus ; 
+    private JMenu administration ; 
+    private JMenu pilote ; 
+    private MonJMenuItem etudiantItem; 
+    private MonJMenuItem promotionItem;
+    private JMenuItem piloteListeFormationItem;
+    public Container conteneur;
+    private JPanel panneauCourant;
 	
 	public ControleurMenu(ServiceItf service) {
 		this.service = service;
@@ -68,6 +75,13 @@ public class ControleurMenu extends JFrame implements ActionListener {
 		etudiantItem.addActionListener (this);  	
 		initIhmComposant();
 		
+		pilote = new JMenu ("Pilote formation") ; 
+		barreMenus.add(pilote) ; 
+		piloteListeFormationItem = new JMenuItem ("liste formation") ; 
+		pilote.add(piloteListeFormationItem) ; 
+		piloteListeFormationItem.addActionListener (this) ;  
+		//initIhmComposant();
+		
 		String resource = getClass().getClassLoader().getResource("icone.png").getPath();
 	    Image icon = Toolkit.getDefaultToolkit().getImage(resource);  
 	    setIconImage(icon);  
@@ -89,6 +103,17 @@ public class ControleurMenu extends JFrame implements ActionListener {
 			ControleurFormation controleurFormation = new ControleurFormation(service, modeleFormation);
 			VueFormation vueFormation = new VueFormation(controleurFormation, modeleFormation);
 			panneauCourant = vueFormation;
+		}
+		else if(source == piloteListeFormationItem) {    
+			System.out.println ("** Action option pilote liste formations") ;
+			System.out.println ("** Action option promotion") ; 
+			ModelPilote modelPilote = new ModelPilote();
+			ControleurPiloteFormation controleurPiloteFormation = new ControleurPiloteFormation(service, modelPilote, null);
+			VuePiloteFormation vuePiloteFormation = new VuePiloteFormation(controleurPiloteFormation, modelPilote);
+			panneauCourant = vuePiloteFormation;
+		}
+		else if(source == piloteListeFormationItem) {    
+			System.out.println ("** Action option pilote formation") ;
 		}
 		conteneur.add(panneauCourant, BorderLayout.CENTER);
 		conteneur.revalidate();

@@ -11,9 +11,10 @@ import entite.Etudiant;
  *
  */
 public interface EtudiantRepositoryItf {
-	Etudiant read(Long id);
+	Etudiant read(String strAcronymes);
 	Etudiant update(Etudiant etudiant);
 	void delete(Long id); 
 	List<Etudiant> readAll();
 	List<Etudiant> readLikeName(String name);
+	Etudiant read(Long idEtudiant);
 }
